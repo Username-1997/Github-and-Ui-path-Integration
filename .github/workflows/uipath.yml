@@ -18,9 +18,9 @@ jobs:
       # Step 3: Trigger the UiPath Process in Orchestrator using Orchestrator API
       - name: Trigger UiPath Job in Orchestrator
         run: |
-          $url = "https://cloud.uipath.com/indiuzaigqwe/DefaultTenant/orchestrator_odata/Jobs/UiPath.Server.Configuration.OData.StartJobs"
+          $url = "https://cloud.uipath.com/indiuzaigqwe/DefaultTenant/orchestrator_/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs"
           $headers = @{
-              "Authorization" = "Bearer $($env:YNNGNJSBCU2RWCJ1SUzFCf43u8YOwxUrxt635Y6XC32vx)"
+              "Authorization" = "Bearer $($env:rt_C61246428B6EFE2693430B7320CC3950E64C2C4E8E559A81ACC0EDD615DCE27A-1)"
           }
           $body = @{
               startInfo = @{
