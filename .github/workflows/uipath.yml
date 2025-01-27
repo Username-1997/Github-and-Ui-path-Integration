@@ -1,38 +1,49 @@
 name: Trigger UiPath Process (Windows)
 
-# Trigger this workflow on push events to the main branch (or any branch you want)
 on:
   push:
     branches:
-      - main  # You can change this to any branch you want to track (like `develop`)
+      - main  # Trigger the workflow when changes are pushed to the main branch
 
 jobs:
   trigger:
-    runs-on: windows-latest  # Use a Windows runner
+    runs-on: windows-latest  # Windows runner
 
     steps:
-      # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Step 3: Trigger the UiPath Process in Orchestrator using Orchestrator API
       - name: Trigger UiPath Job in Orchestrator
         run: |
-          $url = "https://cloud.uipath.com/indiuzaigqwe/DefaultTenant/orchestrator_/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs"
+          # Orchestrator API endpoint for triggering jobs
+          $url = "https://cloud.uipath.com/indiuzaigqwe/DefaultTenant/orchestrator_/api/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs"
+
+          # Provide the API key directly in the Authorization header
           $headers = @{
-              "Authorization" = "Bearer rt_C61246428B6EFE2693430B7320CC3950E64C2C4E8E559A81ACC0EDD615DCE27A-1"
+              "Authorization" = "Bearer rt_C61246428B6EFE2693430B7320CC3950E64C2C4E8E559A81ACC0EDD615DCE27A-1"  # Replace with your actual API key (Bearer token)
+              "Content-Type" = "application/json"
           }
-           $robotId =  1791357 # Replace with your actual Robot ID
+
+          # Directly provide the Robot ID and Organization Unit ID
+          $robotId = 1791357  # Replace with your actual Robot ID
           $organizationUnitId = "5533930"  # Replace with your actual Organization Unit ID (e.g., 12345)
+
+          # Construct the request body
           $body = @{
               startInfo = @{
-                  ReleaseKey = "03596f71-1a51-4305-abb6-85889479f363"  # Replace with the actual ReleaseKey of your process
-                  Strategy = "Specific"  # Choose "Specific" or "All" based on your preference
-                  RobotIds = @($1791357)  # Optional: Replace with the specific Robot ID if necessary
+                  ReleaseKey = "03596f71-1a51-4305-abb6-85889479f363"  # Replace with your actual ReleaseKey of the process
+                  Strategy = "Specific"  # Choose "Specific" or "All" depending on your setup
+                  RobotIds = @($1791357)  # Directly use the Robot ID here
                   NoOfRobots = 1
-                  OrganizationUnitId = $5533930
+                  OrganizationUnitId = $5533930  # Add OrganizationUnitId here
               }
           } | ConvertTo-Json
 
-          Invoke-RestMethod -Uri $url -Method Post -Headers $headers -Body $body -ContentType "application/json"
-
+          # Send the request to Orchestrator and capture the response
+          try {
+              $response = Invoke-RestMethod -Uri $url -Method Post -Headers $headers -Body $body -ContentType "application/json"
+              Write-Output "Response: $($response)"
+          } catch {
+              Write-Error "Error: $($_.Exception.Message)"
+              Write-Output "Response: $($response)"
+          }
