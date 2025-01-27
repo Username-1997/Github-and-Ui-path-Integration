@@ -22,6 +22,8 @@ jobs:
           $headers = @{
               "Authorization" = "Bearer rt_C61246428B6EFE2693430B7320CC3950E64C2C4E8E559A81ACC0EDD615DCE27A-1"
           }
+           $robotId =  1791357 # Replace with your actual Robot ID
+          $organizationUnitId = "5533930"  # Replace with your actual Organization Unit ID (e.g., 12345)
           $body = @{
               startInfo = @{
                   ReleaseKey = "03596f71-1a51-4305-abb6-85889479f363"  # Replace with the actual ReleaseKey of your process
