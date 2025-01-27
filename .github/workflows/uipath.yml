@@ -16,7 +16,7 @@ jobs:
       - name: Trigger UiPath Job in Orchestrator
         run: |
           # Orchestrator API endpoint for triggering jobs
-          $url = "https://cloud.uipath.com/indiuzaigqwe/DefaultTenant/orchestrator_/api/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs"
+          $url = "https://cloud.uipath.com/indiuzaigqwe/DefaultTenant/orchestrator_/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs"
 
           # Provide the API key directly in the Authorization header
           $headers = @{
