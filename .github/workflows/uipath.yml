@@ -1,30 +1,35 @@
+name: Trigger UiPath Process (Windows)
 
-name: Trigger UiPath Process
-
+# Trigger this workflow on push events to the main branch (or any branch you want)
 on:
   push:
     branches:
-      - main
+      - main  # You can change this to any branch you want to track (like `develop`)
 
 jobs:
-  trigger-uipath-job:
- 
-    runs-on: ubuntu-latest
+  trigger:
+    runs-on: windows-latest  # Use a Windows runner
 
     steps:
-      - name: Trigger UiPath Job in Orchestrator
-      run: |
-    $url = "https://cloud.uipath.com/indiuzaigqwe/DefaultTenant/orchestrator_/api/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs"
-    $headers = @{
-        "Authorization" = "Bearer $($env:Ama17s3A25YBK7Vz1hSrmEs-8SdB4eQKF5BUw7K2L5NAA)"
-    }
-    $body = @{
-        startInfo = @{
-            ReleaseKey = "03596f71-1a51-4305-abb6-85889479f363"  # Replace with your actual ReleaseKey
-            Strategy = "Specific"  # Choose either "Specific" or "All"
-            RobotIds = @([int]$env:1791357)  # Optional: Replace with your specific Robot ID
-            NoOfRobots = 1
-        }
-    } | ConvertTo-Json
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    Invoke-RestMethod -Uri $url -Method Post -Headers $headers -Body $body -ContentType "application/json"
+      # Step 3: Trigger the UiPath Process in Orchestrator using Orchestrator API
+      - name: Trigger UiPath Job in Orchestrator
+        run: |
+          $url = "https://cloud.uipath.com/indiuzaigqwe/DefaultTenant/orchestrator_/api/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs"
+          $headers = @{
+              "Authorization" = "Bearer $($env:YNNGNJSBCU2RWCJ1SUzFCf43u8YOwxUrxt635Y6XC32vx)"
+          }
+          $body = @{
+              startInfo = @{
+                  ReleaseKey = "03596f71-1a51-4305-abb6-85889479f363"  # Replace with the actual ReleaseKey of your process
+                  Strategy = "Specific"  # Choose "Specific" or "All" based on your preference
+                  RobotIds = @([int]$env:1791357)  # Optional: Replace with the specific Robot ID if necessary
+                  NoOfRobots = 1
+              }
+          } | ConvertTo-Json
+
+          Invoke-RestMethod -Uri $url -Method Post -Headers $headers -Body $body -ContentType "application/json"
+
