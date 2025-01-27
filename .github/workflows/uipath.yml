@@ -1,0 +1,30 @@
+
+name: Trigger UiPath Process
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  trigger-uipath-job:
+ 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger UiPath Job in Orchestrator
+      run: |
+    $url = "https://cloud.uipath.com/indiuzaigqwe/DefaultTenant/orchestrator_/api/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs"
+    $headers = @{
+        "Authorization" = "Bearer $($env:Ama17s3A25YBK7Vz1hSrmEs-8SdB4eQKF5BUw7K2L5NAA)"
+    }
+    $body = @{
+        startInfo = @{
+            ReleaseKey = "03596f71-1a51-4305-abb6-85889479f363"  # Replace with your actual ReleaseKey
+            Strategy = "Specific"  # Choose either "Specific" or "All"
+            RobotIds = @([int]$env:1791357)  # Optional: Replace with your specific Robot ID
+            NoOfRobots = 1
+        }
+    } | ConvertTo-Json
+
+    Invoke-RestMethod -Uri $url -Method Post -Headers $headers -Body $body -ContentType "application/json"
