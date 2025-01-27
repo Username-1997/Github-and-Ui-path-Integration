@@ -28,6 +28,7 @@ jobs:
                   Strategy = "Specific"  # Choose "Specific" or "All" based on your preference
                   RobotIds = @($1791357)  # Optional: Replace with the specific Robot ID if necessary
                   NoOfRobots = 1
+                  OrganizationUnitId = $5533930
               }
           } | ConvertTo-Json
 
