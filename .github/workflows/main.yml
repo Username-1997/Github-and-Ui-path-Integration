@@ -3,7 +3,7 @@ name: Trigger UiPath Orchestrator Job on Windows
 on:
   push:
     branches:
-      - main  # Specify the branch for triggering the workflow
+      - main
 
 jobs:
   trigger-uipath-job:
@@ -12,7 +12,6 @@ jobs:
     steps:
       - name: Trigger UiPath Job
         run: |
-          # Define Orchestrator details
           $orchestratorUrl = "https://cloud.uipath.com/indiuzaigqwe/DefaultTenant/orchestrator_/?tid=1771083&fid=5533930"
           $username = "manishalakshmi.rajamani@indiumsoft.com"
           $password = "Indium@123"
@@ -20,7 +19,7 @@ jobs:
           $processKey = "03596f71-1a51-4305-abb6-85889479f363"
           $folderName = "Shared"
 
-          # Authenticate and get access token
+      
           $authResponse = Invoke-RestMethod -Uri "$orchestratorUrl/api/account/authenticate" `
             -Method Post `
             -ContentType "application/json" `
