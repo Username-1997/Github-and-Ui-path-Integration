@@ -16,7 +16,7 @@ jobs:
       - name: Trigger UiPath Job
         run: |
           # Set Orchestrator URL and credentials directly
-          $OrchestratorUrl = "https://cloud.uipath.com/indiuzaigqwe/DefaultTenant/orchestrator_/"  # Replace with your Orchestrator URL
+          $OrchestratorUrl = "https://cloud.uipath.com/indiuzaigqwe/DefaultTenant/orchestrator_"  # Replace with your Orchestrator URL
           $ClientId = "8DEv1AMNXczW3y4U15LL3jYf62jK93n5"  # Replace with your actual Client ID
           $UserKey = "E-sv-G0YxVfIY8RNDDZo882azMwy9fmOGSleJ1Erw0dJK"  # Replace with your actual User Key
           $ApiKey = "rt_C1B25F7F9FE2C348675911128E1203B2D1DFF470DFA3EEAAB4731A4FDCB87A84-1"  # Replace with your actual API Key
