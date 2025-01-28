@@ -1,0 +1,65 @@
+name: Trigger UiPath Job on Commit
+
+on:
+  push:
+    branches:
+      - main # Adjust the branch if needed, e.g., "dev", "feature/xyz", etc.
+
+jobs:
+  trigger-uipath-job:
+    runs-on: windows-latest # Specify to run on Windows machine
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3  # This checks out the latest code from your repository
+
+      - name: Trigger UiPath Job
+        env:
+          ORCHESTRATOR_URL: ${{ secrets.ORCHESTRATORURL }}  # The Orchestrator URL
+          CLIENT_ID: ${{ secrets.CLIENTID }}  # Client ID for API access
+          USER_KEY: ${{ secrets.USERKEY }}  # User Key for API access
+          API_KEY: ${{ secrets.APIKEY }}  # API Key for authentication
+        run: |
+          # PowerShell script to authenticate with Orchestrator and trigger a job
+          
+          # Set Orchestrator URL and credentials
+          $OrchestratorUrl = $env:ORCHESTRATORURL
+          $ClientId = $env:CLIENTID
+          $UserKey = $env:USERKEY
+          $ApiKey = $env:APIKEY
+
+          # Authenticate and retrieve access token
+          $AuthUrl = "$OrchestratorUrl/api/account/authenticate"
+          $AuthBody = @{
+            tenancyName = "DefaultTenant"  # Replace with your actual tenant name
+            usernameOrEmailAddress = "manishalakshmi.rajamani@indiumsoft.com"  # Replace with your UiPath Orchestrator username or email
+            password = "Indium@123"  # Replace with your password
+          }
+
+          # Perform the authentication request
+          $AuthResponse = Invoke-RestMethod -Uri $AuthUrl -Method Post -ContentType "application/json" -Body ($AuthBody | ConvertTo-Json)
+
+          # Extract access token from response
+          $AccessToken = $AuthResponse.result.access_token
+
+          # Define the ReleaseKey for the job you want to trigger
+          $ReleaseKey = "03596f71-1a51-4305-abb6-85889479f363"  # This is the key for the process you want to start
+
+          # Optional: Define specific Robot ID or use NoOfRobots=0 to let Orchestrator pick a robot automatically
+          $RobotId = "1791357"  # This is optional if you want to assign a specific robot
+
+          # Start the job using the Orchestrator API
+          $JobStartUrl = "$OrchestratorUrl/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs"
+          $StartJobBody = @{
+            startInfo = @{
+              ReleaseKey = 03596f71-1a51-4305-abb6-85889479f363  # The process you want to trigger
+              Strategy = "All"  # Strategy for selecting robots, "All" for all available robots
+              RobotIds = @(1791357)  # Optional: Provide Robot IDs if you want specific robots to run the job
+              NoOfRobots = 1  # Optional: Set to 0 for Orchestrator to automatically choose robots
+            }
+          }
+
+          # Send the request to start the job
+          Invoke-RestMethod -Uri $JobStartUrl -Method Post -Headers @{Authorization = "Bearer $AccessToken"} -ContentType "application/json" -Body ($StartJobBody | ConvertTo-Json)
+
+          Write-Host "Job triggered successfully!"
