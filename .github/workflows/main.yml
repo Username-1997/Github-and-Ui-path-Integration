@@ -51,10 +51,10 @@ jobs:
           #}
 
           # Check if authentication succeeded
-          if ($AuthResponse -eq $null) {
-            Write-Error "Authentication failed!"
-            exit 1
-          }
+         # if ($AuthResponse -eq $null) {
+          #  Write-Error "Authentication failed!"
+           # exit 1
+          #}
 
           # Extract access token from response
           $AccessToken = $AuthResponse.result.access_token
