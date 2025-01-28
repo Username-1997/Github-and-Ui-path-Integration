@@ -13,7 +13,7 @@ jobs:
       - name: Trigger UiPath Job
         run: |
           # Define Orchestrator details
-          $orchestratorUrl = "https://cloud.uipath.com/indiuzaigqwe/DefaultTenant"
+          $orchestratorUrl = "https://cloud.uipath.com/indiuzaigqwe/DefaultTenant/orchestrator_/?tid=1771083&fid=5533930"
           $username = "manishalakshmi.rajamani@indiumsoft.com"
           $password = "Indium@123"
           $tenantName = "DefaultTenant"
@@ -21,7 +21,7 @@ jobs:
           $folderName = "Shared"
 
           # Authenticate and get access token
-          $authResponse = Invoke-RestMethod -Uri "https://cloud.uipath.com/indiuzaigqwe/DefaultTenant/api/account/authenticate" `
+          $authResponse = Invoke-RestMethod -Uri "$orchestratorUrl/api/account/authenticate" `
             -Method Post `
             -ContentType "application/json" `
             -Body (@{
