@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Trigger UiPath Job
         run: |
-          $orchestratorUrl = "https://cloud.uipath.com/indiuzaigqwe/DefaultTenant/orchestrator_/robots/configured?tid=1771083&fid=5533930&index=0&size=20&state=M4ewTgLgPgZglgUwDYBMoFdgLAOhupJAOQEMBbBKFOMBAYwjhADsoTg6A9bgEgAYoPAIxQATFADMUACwBdWUA%3D%3D%3D"
+          $orchestratorUrl = "https://cloud.uipath.com/indiuzaigqwe/DefaultTenant"
           $username = "manishalakshmi.rajamani@indiumsoft.com"
           $password = "Indium@123"
           $tenantName = "DefaultTenant"
