@@ -14,8 +14,8 @@ jobs:
         run: |
           # Define Orchestrator details
           $orchestratorUrl = "https://cloud.uipath.com/indiuzaigqwe/DefaultTenant/orchestrator_"
-          $clientId = "8DEv1AMNXczW3y4U15LL3jYf62jK93n5"
-          $userKey = "E-sv-G0YxVfIY8RNDDZo882azMwy9fmOGSleJ1Erw0dJK"
+          $username = "manishalakshmi.rajamani@indiumsoft.com"
+          $password = "Indium@123"
           $tenantName = "DefaultTenant"
           $processKey = "03596f71-1a51-4305-abb6-85889479f363"
           $folderName = "Shared"
@@ -25,12 +25,11 @@ jobs:
             -Method Post `
             -ContentType "application/json" `
             -Body (@{
-              grant_type = "client_credentials"
-              client_id = $clientId
-              user_key = $userKey
+              usernameOrEmailAddress = $username
+              password = $password
               tenant_name = $tenantName
-            } | ConvertTo-Json -Depth 10)
-          $accessToken = $authResponse.access_token
+                 } | ConvertTo-Json -Depth 10)
+          $accessToken = $authResponse.result
 
           Write-Host "Access token retrieved successfully."
 
