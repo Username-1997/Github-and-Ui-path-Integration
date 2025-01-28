@@ -1,54 +1,52 @@
-name: Trigger UiPath Job on Commit
+name: Trigger UiPath Orchestrator Job on Windows
 
 on:
   push:
     branches:
-      - main  # Trigger on push to the main branch
+      - main  # Specify the branch for triggering the workflow
 
 jobs:
   trigger-uipath-job:
-    runs-on: windows-latest  # Run on a Windows runner
+    runs-on: windows-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3  # Checkout the repository code
-
       - name: Trigger UiPath Job
         run: |
-          # Set Orchestrator URL and credentials directly
-          $OrchestratorUrl = "https://cloud.uipath.com/indiuzaigqwe/DefaultTenant/orchestrator_"  # Replace with your Orchestrator URL
-          $ClientId = "8DEv1AMNXczW3y4U15LL3jYf62jK93n5"  # Replace with your actual Client ID
-          $UserKey = "E-sv-G0YxVfIY8RNDDZo882azMwy9fmOGSleJ1Erw0dJK"  # Replace with your actual User Key
-          $ApiKey = "rt_C1B25F7F9FE2C348675911128E1203B2D1DFF470DFA3EEAAB4731A4FDCB87A84-1"  # Replace with your actual API Key
+          # Define Orchestrator details
+          $orchestratorUrl = "https://cloud.uipath.com/indiuzaigqwe/DefaultTenant/orchestrator_"
+          $clientId = "8DEv1AMNXczW3y4U15LL3jYf62jK93n5"
+          $userKey = "E-sv-G0YxVfIY8RNDDZo882azMwy9fmOGSleJ1Erw0dJK"
+          $tenantName = "DefaultTenant"
+          $processKey = "03596f71-1a51-4305-abb6-85889479f363"
+          $folderName = "Shared"
 
-          # Print out Orchestrator URL to verify it's correct
-          Write-Host "Orchestrator URL: $OrchestratorUrl"
+          # Authenticate and get access token
+          $authResponse = Invoke-RestMethod -Uri "$orchestratorUrl/api/account/authenticate" `
+            -Method Post `
+            -ContentType "application/json" `
+            -Body (@{
+              grant_type = "client_credentials"
+              client_id = $clientId
+              user_key = $userKey
+              tenant_name = $tenantName
+            } | ConvertTo-Json -Depth 10)
+          $accessToken = $authResponse.access_token
 
-          # Check if URL is correctly set
-          if (-not $OrchestratorUrl) {
-            Write-Error "Orchestrator URL is not set properly."
-            exit 1
-          }
+          Write-Host "Access token retrieved successfully."
 
-          # Trigger UiPath job
-          $JobStartUrl = "$OrchestratorUrl/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs"
-          Write-Host "Starting job with URL: $JobStartUrl"  # Debugging: Print the full URL
+          # Start the UiPath Job
+          $jobResponse = Invoke-RestMethod -Uri "$orchestratorUrl/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs" `
+            -Method Post `
+            -Headers @{ Authorization = "Bearer $accessToken" } `
+            -ContentType "application/json" `
+            -Body (@{
+              startInfo = @{
+                ReleaseKey = $processKey
+                Strategy = "ModernJobsCount"
+                JobsCount = 1
+                InputArguments = "{}"
+                FolderName = $folderName
+              }
+            } | ConvertTo-Json -Depth 10)
 
-          $ReleaseKey = "03596f71-1a51-4305-abb6-85889479f363"  # Replace with the release key of your process
-          $StartJobBody = @{
-            startInfo = @{
-              ReleaseKey = $ReleaseKey
-              Strategy = "All"
-              NoOfRobots = 0  # Or set to the specific robot ID you want to use
-            }
-          }
-
-          # Try to trigger the job
-          try {
-            Invoke-RestMethod -Uri $JobStartUrl -Method Post -Headers @{Authorization = "Bearer $AccessToken"} -ContentType "application/json" -Body ($StartJobBody | ConvertTo-Json)
-            Write-Host "Job triggered successfully!"
-          }
-          catch {
-            Write-Host "Error in triggering job: $_"
-            exit 1
-          }
+          Write-Host "UiPath Job triggered successfully."
