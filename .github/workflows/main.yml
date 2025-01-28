@@ -19,7 +19,7 @@ jobs:
           $processKey = "03596f71-1a51-4305-abb6-85889479f363"
           $folderName = "Shared"
 
-      
+          # Authentication request
           $authResponse = Invoke-RestMethod -Uri "$orchestratorUrl/api/account/authenticate" `
             -Method Post `
             -ContentType "application/json" `
@@ -27,12 +27,17 @@ jobs:
               usernameOrEmailAddress = $username
               password = $password
               tenant_name = $tenantName
-                 } | ConvertTo-Json -Depth 10)
+            } | ConvertTo-Json -Depth 10)
+          
+          if ($authResponse -eq $null -or !$authResponse.result) {
+            Write-Host "Failed to retrieve access token."
+            exit 1
+          }
+          
           $accessToken = $authResponse.result
-
           Write-Host "Access token retrieved successfully."
 
-          # Start the UiPath Job
+          # Trigger the UiPath Job
           $jobResponse = Invoke-RestMethod -Uri "$orchestratorUrl/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs" `
             -Method Post `
             -Headers @{ Authorization = "Bearer $accessToken" } `
