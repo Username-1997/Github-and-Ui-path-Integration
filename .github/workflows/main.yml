@@ -12,8 +12,7 @@ jobs:
     steps:
       - name: Trigger UiPath Job
         run: |
-          $orchestratorUrl = "https://cloud.uipath.com/indiuzaigqwe/DefaultTenant"
-          $usernameOrEmailAddress = "manishalakshmi.rajamani@indiumsoft.com"
+          &apikey = "vSNvW9M/IRBsL2vq8/fXGk8AaK98o7wModje3H+m7LToBgk1j0m8+ENiAKtzbpRqgm9j2PyfspO5ZGdo4qF6Dg=="
           $password = "Indium@123"
           $tenantName = "DefaultTenant"
           $processKey = "03596f71-1a51-4305-abb6-85889479f363"
@@ -24,8 +23,7 @@ jobs:
             -Method Post `
             -ContentType "application/json" `
             -Body (@{
-              usernameOrEmailAddress = $usernameOrEmailAddress
-              password = $password
+              apikey = $apikey
               tenant_name = $tenantName
             } | ConvertTo-Json -Depth 10)
           
