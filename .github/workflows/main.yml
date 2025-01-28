@@ -52,9 +52,9 @@ jobs:
           $JobStartUrl = "$OrchestratorUrl/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs"
           $StartJobBody = @{
             startInfo = @{
-              ReleaseKey = 03596f71-1a51-4305-abb6-85889479f363  # The process you want to trigger
+              ReleaseKey = $ReleaseKey  # The process you want to trigger
               Strategy = "All"  # Strategy for selecting robots, "All" for all available robots
-              RobotIds = @(1791357)  # Optional: Provide Robot IDs if you want specific robots to run the job
+              RobotIds = @($RobotId)  # Optional: Provide Robot IDs if you want specific robots to run the job
               NoOfRobots = 1  # Optional: Set to 0 for Orchestrator to automatically choose robots
             }
           }
