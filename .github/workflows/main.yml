@@ -42,13 +42,13 @@ jobs:
           }
 
           # Try to make the authentication request
-          try {
-            $AuthResponse = Invoke-RestMethod -Uri $AuthUrl -Method Post -ContentType "application/json" -Body ($AuthBody | ConvertTo-Json)
-          }
-          catch {
-            Write-Host "Error in making authentication request: $_"
-            exit 1
-          }
+         # try {
+          #  $AuthResponse = Invoke-RestMethod -Uri $AuthUrl -Method Post -ContentType "application/json" -Body ($AuthBody | ConvertTo-Json)
+          #}
+          #catch {
+           # Write-Host "Error in making authentication request: $_"
+            #exit 1
+          #}
 
           # Check if authentication succeeded
           if ($AuthResponse -eq $null) {
