@@ -40,26 +40,6 @@ jobs:
             usernameOrEmailAddress = "manishalakshmi.rajamani@indiumsoft.com"  # Replace with your username
             password = "Indium@123"  # Replace with your password
           }
-
-          # Try to make the authentication request
-         # try {
-          #  $AuthResponse = Invoke-RestMethod -Uri $AuthUrl -Method Post -ContentType "application/json" -Body ($AuthBody | ConvertTo-Json)
-          #}
-          #catch {
-           # Write-Host "Error in making authentication request: $_"
-            #exit 1
-          #}
-
-          # Check if authentication succeeded
-         # if ($AuthResponse -eq $null) {
-          #  Write-Error "Authentication failed!"
-           # exit 1
-          #}
-
-          # Extract access token from response
-          $AccessToken = $AuthResponse.result.access_token
-          Write-Host "Access Token: $AccessToken"  # Debugging: Print the access token
-
           # Trigger UiPath job
           $JobStartUrl = "$OrchestratorUrl/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs"
           Write-Host "Starting job with URL: $JobStartUrl"  # Debugging: Print the full URL
