@@ -30,16 +30,6 @@ jobs:
             exit 1
           }
 
-          # Debugging: Show the final URL to be used
-          $AuthUrl = "$OrchestratorUrl/api/account/authenticate"
-          Write-Host "Authentication URL: $AuthUrl"  # Debugging: Print the full URL
-
-          # Authenticate and get access token
-          $AuthBody = @{
-            tenancyName = "DefaultTenant"  # Replace with your tenant name
-            usernameOrEmailAddress = "manishalakshmi.rajamani@indiumsoft.com"  # Replace with your username
-            password = "Indium@123"  # Replace with your password
-          }
           # Trigger UiPath job
           $JobStartUrl = "$OrchestratorUrl/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs"
           Write-Host "Starting job with URL: $JobStartUrl"  # Debugging: Print the full URL
