@@ -22,8 +22,8 @@ jobs:
 
           # Authentication request
           $authResponse = Invoke-RestMethod -Uri $orchestratorUrl
-            -Method Post `
-            -ContentType "application/json" `
+            -Method Post 
+            -ContentType "application/json" 
             -Body (@{
               usernameOrEmailAddress = $usernameOrEmailAddress
               password = $password
@@ -43,7 +43,7 @@ jobs:
           $jobResponse = Invoke-RestMethod -Uri "$orchestratorUrl/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs" `
             -Method Post `
             -Headers @{ Authorization = "Bearer $accessToken" } `
-            -ContentType "application/json" `
+            -ContentType "application/json" 
             -Body (@{
               startInfo = @{
                 ReleaseKey = $processKey
