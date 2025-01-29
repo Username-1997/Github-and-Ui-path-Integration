@@ -21,7 +21,7 @@ jobs:
           $folderName = "Shared"
 
           # Authentication request
-          $authResponse = Invoke-RestMethod -Uri "$orchestratorUrl" `
+          $authResponse = Invoke-RestMethod -Uri $orchestratorUrl
             -Method Post `
             -ContentType "application/json" `
             -Body (@{
